@@ -19,6 +19,36 @@ timer.start = True
 timer.tic = 0
 timer.toc = 0
 
+def open_file(): # loads file
+  Tk().withdraw()
+  while True:
+      try:
+          fileName = askopenfilename()
+          im = Image.open(fileName)
+          return im
+      except AttributeError:
+          while True:
+              inp = input('Error: No file selected, try again? (y/n): ').lower()
+              if inp == 'n':
+                  quit()
+              elif inp == 'y':
+                  break
+
+def save_file(file): # saves file
+  Tk().withdraw()
+  while True:
+      try:
+          fileName = asksaveasfilename(defaultextension='PNG')
+          file.save(fileName)
+          break
+      except (AttributeError, ValueError):
+          while True:
+              inp = input('Error: No file selected, try again? (y/n): ').lower()
+              if inp == 'n':
+                  quit()
+              elif inp == 'y':
+                  break
+
 def perlin_array(shape, # Generates perlin noise (engineeredjoy.com)
 			scale=100, octaves = 15, 
 			persistence = .1, 
@@ -45,19 +75,7 @@ def perlin_array(shape, # Generates perlin noise (engineeredjoy.com)
     arr = norm_me(arr)
     return arr
 #-----Body
-Tk().withdraw() # File loader
-while True:
-    try:
-        fileName = askopenfilename()
-        im = Image.open(fileName)
-        break
-    except AttributeError:
-        while True:
-            inp = input('Error: No file selected, try again? (y/n): ').lower()
-            if inp == 'n':
-                quit()
-            elif inp == 'y':
-                break
+im = open_file()
 #-----Pre-processing and Setup
 im = ImageOps.exif_transpose(im) # rotates image if needed
 a = np.asarray(im)  # generates array from type Image
@@ -96,16 +114,4 @@ timer()
 newPoints = Image.fromarray(points).convert(mode='L')
 newPoints.show()
 #-----Save Processed Image
-Tk().withdraw() # File saver
-while True:
-    try:
-        fileName = asksaveasfilename(defaultextension='PNG')
-        newPoints.save(fileName)
-        break
-    except (AttributeError, ValueError):
-        while True:
-            inp = input('Error: No file selected, try again? (y/n): ').lower()
-            if inp == 'n':
-                quit()
-            elif inp == 'y':
-                break
+save_file(newPoints)
