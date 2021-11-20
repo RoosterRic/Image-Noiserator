@@ -23,8 +23,8 @@ def open_file(): # loads file
   Tk().withdraw()
   while True:
       try:
-          filename = askopenfilename()
-          im = Image.open(filename)
+          fileName = askopenfilename()
+          im = Image.open(fileName)
           return im
       except AttributeError:
           while True:
@@ -38,8 +38,8 @@ def save_file(file): # saves file
   Tk().withdraw()
   while True:
       try:
-          filename = asksaveasfilename(defaultextension='PNG')
-          file.save(filename)
+          fileName = asksaveasfilename(defaultextension='PNG')
+          file.save(fileName)
           break
       except (AttributeError, ValueError):
           while True:
@@ -99,7 +99,7 @@ random.seed(seed)
 timer()
 try: # Use try-catch as cheap way of having 'seed' be optional input
     noiseMap = perlin_array([dim[0], dim[1]], seed=int(seed))*255
-except ValueError:
+except:
     noiseMap = perlin_array([dim[0], dim[1]])*255
 noiseIm = Image.fromarray(noiseMap).show()
 timer()
